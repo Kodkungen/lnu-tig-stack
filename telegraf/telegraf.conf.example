@@ -1,0 +1,23 @@
+[agent]
+  flush_interval = "15s"
+  interval = "15s"
+
+[[inputs.mqtt_consumer]]
+  name_override = "TTN"
+  servers = ["tcp://eu.thethings.network:1883"]
+  qos = 0
+  connection_timeout = "30s"
+  topics = [ "+/devices/#" ]
+  client_id = "ttn"
+  username = "<application id>"
+  password = "<access key>"
+  data_format = "json"
+
+# Print all metrics that pass through this filter.
+[[processors.printer]]
+
+[[outputs.influxdb]]
+  database = "iot"
+  urls = [ "http://influxdb:8086" ]
+  username = "admin"
+  password = "<password>"

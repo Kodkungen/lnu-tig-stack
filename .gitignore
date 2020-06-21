@@ -1,0 +1,3 @@
+influxdb/data/*
+influxdb/influxdb.env
+telegraf/telegraf.conf

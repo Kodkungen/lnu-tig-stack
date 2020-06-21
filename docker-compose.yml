@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        restart: unless-stopped
+        tty: true
+        ports:
+          - "3000:3000"
+        networks:
+          - tig-net
+    
+    influx:
+        image: influxdb:latest
+        container_name: influxdb
+        restart: unless-stopped
+        ports:
+          - "8086:8086"
+        env_file:
+            - "./influxdb/influxdb.env"
+        environment:
+            INFLUXDB_HTTP_AUTH_ENABLED: "true"
+            INFLUXDB_DB: "iot"
+        volumes:
+          - "./influxdb/data:/var/lib/influxdb"
+        networks:
+          - tig-net
+
+    telegraf:
+        image: telegraf:latest
+        container_name: telegraf
+        restart: unless-stopped
+        tty: true
+        depends_on: 
+          - "influx"
+        volumes:
+          - "./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
+        networks:
+          - tig-net
+    
+networks: 
+    tig-net:
+        driver: bridge
