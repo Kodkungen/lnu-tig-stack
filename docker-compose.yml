@@ -38,6 +38,7 @@ services:
           - "./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro"
         networks:
           - tig-net
+        privileged: true
     
 networks: 
     tig-net:
